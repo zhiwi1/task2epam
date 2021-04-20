@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.example.org/flowers"
+        xmlns:tns="http://www.example.org/flowers"
+        elementFormDefault="qualified">
+    <element name="flowers">
+        <complexType>
+            <sequence>
+                <element name="time-flower" type="tns:time-flower" minOccurs="16" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="flower">
+        <sequence>
+            <element name="name" type="tns:name-flower"/>
+            <element ref="tns:soil"/>
+            <element ref="tns:visual-parameters"/>
+            <element ref="tns:growing-tips"/>
+            <element ref="tns:multiplying"/>
+        </sequence>
+        <attribute name="id" type="ID" use="required"/>
+        <attribute name="origin" use="optional" default="Unknown">
+            <simpleType>
+                <restriction base="string">
+                    <enumeration value="Belarus"/>
+                    <enumeration value="China"/>
+                    <enumeration value="America"/>
+                    <enumeration value="Russia"/>
+                    <enumeration value="Iran"/>
+                    <enumeration value="Tunis"/>
+                    <enumeration value="Greece"/>
+                    <enumeration value="Unknown"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+
+    </complexType>
+    <complexType name="time-flower">
+        <complexContent>
+            <extension base="tns:flower">
+                <sequence>
+                    <element name="transfer-time" type="dateTime"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="soil">
+        <simpleType>
+            <restriction base="string">
+                <enumeration value="podzol"/>
+                <enumeration value="unpaved"/>
+                <enumeration value="sodpodzol"/>
+            </restriction>
+        </simpleType>
+    </element>
+    <element name="visual-parameters">
+        <complexType>
+            <sequence>
+                <element name="stem-color" type="string"/>
+                <element name="leaf-color" type="string"/>
+                <element name="average-size" type="positiveInteger"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <element name="growing-tips">
+        <complexType>
+            <sequence>
+                <element ref="tns:temperature"/>
+                <element name="lightning" type="boolean"/>
+                <element name="watering" type="positiveInteger"/>
+            </sequence>
+        </complexType>
+    </element>
+    <element name="temperature">
+        <simpleType>
+            <restriction base="integer">
+                <minInclusive value="-273"/>
+                <maxInclusive value="100"/>
+            </restriction>
+        </simpleType>
+    </element>
+    <element name="multiplying">
+        <simpleType>
+            <restriction base="string">
+                <enumeration value="seed"/>
+                <enumeration value="stalk"/>
+                <enumeration value="liaf"/>
+            </restriction>
+        </simpleType>
+    </element>
+    <simpleType name="name-flower">
+        <restriction base="string">
+            <pattern value="([A-Z]|[a-z])+"/>
+        </restriction>
+    </simpleType>
+    <element name="flower" type="tns:flower" abstract="true"/>
+    <element name="time-flower" type="tns:time-flower" substitutionGroup="tns:flower"/>
+
+</schema>
